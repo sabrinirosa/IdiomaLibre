@@ -31,7 +31,7 @@ const FREE_LESSONS = 3;
    ============================================================ */
 const WHATSAPP_NUMBER = '351915391705';
 
-const UNLOCK_PRICE = '2,99€';
+const UNLOCK_PRICE = '4,99€ ou 29,99R$';
 
 function whatsappUnlockLink(){
   const msg = `Olá! Quero liberar o acesso completo ao IdioLibre (${UNLOCK_PRICE}).`;

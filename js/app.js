@@ -26,7 +26,10 @@ let current = 0; // índice da aula aberta (só usado em pages/lesson.html)
 let LEVEL = null;
 function getLevelParam(){
   const p = new URLSearchParams(window.location.search).get('nivel');
-  return p === 'a2' ? 'a2' : 'a1';
+  if(p === 'a2') return 'a2';
+  if(p === 'b1') return 'b1';
+  if(p === 'b2') return 'b2';
+  return 'a1';
 }
 function levelData(){
   const key = getLevelParam();
@@ -37,6 +40,24 @@ function levelData(){
       storageKey: 'idiolibre_progress_a2',
       alwaysLocked: true, // A2 é continuação: exige acesso liberado em todas as aulas
       qs: '?nivel=a2', qsAmp: '&nivel=a2'
+    };
+  }
+  if(key === 'b1' && typeof lessonsB1 !== 'undefined'){
+    return {
+      key: 'b1', label: 'B1', list: lessonsB1,
+      emojis: (typeof LESSON_EMOJIS_B1 !== 'undefined') ? LESSON_EMOJIS_B1 : [],
+      storageKey: 'idiolibre_progress_b1',
+      alwaysLocked: true, // B1 exige acesso liberado em todas as aulas
+      qs: '?nivel=b1', qsAmp: '&nivel=b1'
+    };
+  }
+  if(key === 'b2' && typeof lessonsB2 !== 'undefined'){
+    return {
+      key: 'b2', label: 'B2', list: lessonsB2,
+      emojis: (typeof LESSON_EMOJIS_B2 !== 'undefined') ? LESSON_EMOJIS_B2 : [],
+      storageKey: 'idiolibre_progress_b2',
+      alwaysLocked: true, // B2 exige acesso liberado em todas as aulas
+      qs: '?nivel=b2', qsAmp: '&nivel=b2'
     };
   }
   return {
@@ -50,13 +71,13 @@ function levelData(){
 function lessonHref(n){ return `lesson.html?aula=${n}${LEVEL.qsAmp}`; }
 function lessonsHref(){ return `lessons.html${LEVEL.qs}`; }
 
-/* Todos os níveis do curso. A1 e A2 já têm conteúdo; B1-C2 estão
-   "em breve" e apontam para páginas próprias (pages/b1.html, etc). */
+/* Todos os níveis do curso. A1, A2, B1 e B2 já têm conteúdo; C1-C2
+   estão "em breve" e apontam para páginas próprias (pages/c1.html, etc). */
 const ALL_LEVELS = [
   { key:'a1', label:'A1', href:'lessons.html' },
   { key:'a2', label:'A2', href:'lessons.html?nivel=a2' },
-  { key:'b1', label:'B1', href:'b1.html' },
-  { key:'b2', label:'B2', href:'b2.html' },
+  { key:'b1', label:'B1', href:'lessons.html?nivel=b1' },
+  { key:'b2', label:'B2', href:'lessons.html?nivel=b2' },
   { key:'c1', label:'C1', href:'c1.html' },
   { key:'c2', label:'C2', href:'c2.html' },
 ];
@@ -134,7 +155,7 @@ function renderWelcomePage(){
         <p class="modal-msg" id="login-msg"></p>
         <div class="modal-divider"><span>ou</span></div>
         <a class="whatsapp-btn" href="${whatsappUnlockLink()}" target="_blank" rel="noopener">💬 Pedir liberação agora no WhatsApp</a>
-        <p class="whatsapp-note">Liberação manual rápida: mande seu e-mail pelo WhatsApp e receba acesso a todas as aulas por apenas 2,99€.</p>
+        <p class="whatsapp-note">Liberação manual rápida: mande seu e-mail pelo WhatsApp e receba acesso a todas as aulas por apenas 4,99€ ou 29,99R$.</p>
       </div>
     </div>
   `;
@@ -165,9 +186,19 @@ function renderLessonsListPage(){
     `;
   }).join('');
 
-  const subtitle = LEVEL.key === 'a2'
-    ? 'Continue de onde parou na A1: aqui você usa o que já sabe para viver situações reais em inglês.'
-    : (isIn ? 'Escolha uma aula para começar ou continuar de onde parou.' : 'As 3 primeiras aulas são livres. A partir da 4ª, faça login para desbloquear.');
+  const subtitleMap = {
+    a2: 'Continue de onde parou na A1: aqui você usa o que já sabe para viver situações reais em inglês.',
+    b1: 'Situações do dia a dia para contar, explicar e resolver problemas em inglês — sem depender da tradução.',
+    b2: 'Explique, discuta, negocie e defenda suas ideias em inglês — conversas de verdade, não só frases prontas.',
+  };
+  const subtitle = subtitleMap[LEVEL.key]
+    || (isIn ? 'Escolha uma aula para começar ou continuar de onde parou.' : 'As 3 primeiras aulas são livres. A partir da 4ª, faça login para desbloquear.');
+
+  const titleMap = {
+    a2: 'Inglês para viver, não para passar numa prova',
+    b1: 'Contar, explicar e resolver',
+    b2: 'Explicar, discutir e negociar',
+  };
 
   root.innerHTML = `
     <div class="page-topbar">
@@ -177,7 +208,7 @@ function renderLessonsListPage(){
     </div>
     <main>
       <div class="course-header">
-        <h1>${LEVEL.key === 'a2' ? 'Inglês para viver, não para passar numa prova' : 'Do zero ao avançado'}</h1>
+        <h1>${titleMap[LEVEL.key] || 'Do zero ao avançado'}</h1>
         <p class="sub">${subtitle}</p>
         <div class="course-progress">
           ${LEVEL.label} • ${progress.done.length}/${list.length} aulas
@@ -339,7 +370,9 @@ function renderLessonMain(lesson){
               <span class="who">${l.speaker}</span>
               <div class="scene-bubble">
                 ${l.en}
-                <span class="pt">${l.pt}</span>
+                ${lesson.immersive
+                  ? `<button class="translate-btn" onclick="toggleTranslation(this)">🇵🇹 Ver tradução</button><span class="pt line-pt">${l.pt}</span>`
+                  : `<span class="pt">${l.pt}</span>`}
               </div>
             </div>
           `).join('')}

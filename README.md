@@ -6,7 +6,7 @@
 
 **Aprenda inglês do zero ao avançado — uma aula por vez.**
 
-Curso A1 completo · 30 aulas · Prática guiada por IA · 100% gratuito e offline-first
+Curso A1 a B2 completo · 106 aulas · Prática guiada por IA · 100% gratuito e offline-first
 
 </div>
 
@@ -27,9 +27,24 @@ reconheça o padrão e ganhe confiança:
    →  ♻️ REUTILIZE  →  🎯 DESAFIO  →  🗣️ prática com IA externa
 ```
 
-Não há chatbot nem API de IA embutida no site — cada aula gera um **prompt
-pronto** para o aluno colar no ChatGPT, Gemini, Claude ou outra IA de sua
-preferência, e praticar a conversa por 5–10 minutos.
+Não há chatbot nem API de IA embutida no site — cada aula **gera um prompt
+automaticamente** a partir do próprio conteúdo da aula (tema, estruturas,
+vocabulário e o que já foi visto antes), pronto pra colar no ChatGPT, Gemini,
+Claude ou outra IA, e praticar a conversa por 5–10 minutos.
+
+## 🌍 Níveis disponíveis
+
+| Nível | Aulas | Acesso | Estilo |
+|---|---|---|---|
+| **A1** | 30 | 3 primeiras livres, resto com login | Introdutório, com tradução sempre visível |
+| **A2** | 16 | Login obrigatório | Imersivo — só o novo fica com tradução escondida |
+| **B1** | 30 | Login obrigatório | Imersivo |
+| **B2** | 30 | Login obrigatório | Imersivo, conversas mais longas e argumentativas |
+
+Troca de nível pelo parâmetro `?nivel=` na URL (`a2`, `b1`, `b2` — A1 é o
+padrão): `pages/lessons.html?nivel=b2`, por exemplo. O progresso de cada
+nível é salvo separadamente (`idiolibre_progress_b2`, etc.), então terminar
+um nível não afeta os outros.
 
 ## 📁 Estrutura do projeto
 
@@ -38,39 +53,50 @@ IdioLibre/
 │
 ├── index.html              → tela de boas-vindas (raiz do site)
 ├── README.md                 → este arquivo
-├── .gitignore
+├── CNAME
 │
 ├── pages/
-│   ├── lessons.html          → índice com as 30 aulas
-│   └── lesson.html           → conteúdo de uma aula (lê ?aula=N na URL)
+│   ├── lessons.html          → índice das aulas (todos os níveis, via ?nivel=)
+│   ├── lesson.html           → conteúdo de uma aula (?aula=N&nivel=X)
+│   ├── b2.html                → redireciona pra lessons.html?nivel=b2 (link antigo)
+│   ├── c1.html                → "em breve" (nível ainda não criado)
+│   └── c2.html                → "em breve" (nível ainda não criado)
 │
 ├── css/
 │   └── style.css              → identidade visual completa (carimbo de passaporte)
 │
 ├── js/
-│   ├── lessons-data.js        → conteúdo das 30 aulas (vocabulário, diálogos,
-│   │                              atividades, desafios, prompts de IA)
-│   └── app.js                  → progresso (localStorage) e renderização de
-│                                   cada uma das 3 páginas
+│   ├── lessons-data.js        → conteúdo das 30 aulas do A1
+│   ├── lessons-data-a2.js     → conteúdo das 16 aulas do A2 (imersivo)
+│   ├── lessons-data-b1.js     → conteúdo das 30 aulas do B1 (imersivo, 6 mundos)
+│   ├── lessons-data-b2.js     → conteúdo das 30 aulas do B2 (imersivo, 6 mundos)
+│   ├── auth.js                 → login/acesso antecipado (Supabase + WhatsApp)
+│   └── app.js                  → um único motor de renderização pra todos os
+│                                   níveis: detecta o nível pelo `?nivel=` na
+│                                   URL e renderiza a partir do array certo
 │
 └── images/
     └── logo.jpg                → carimbo/logo do IdioLibre
 ```
 
 É um site **multi-página de verdade**: cada aula tem sua própria URL
-(`pages/lesson.html?aula=5`), o botão **Voltar** do navegador funciona
-normalmente, e qualquer aula pode ser aberta direto por link ou favorito.
+(`pages/lesson.html?aula=5` ou `pages/lesson.html?aula=5&nivel=b2`), o botão
+**Voltar** do navegador funciona normalmente, e qualquer aula pode ser
+aberta direto por link ou favorito.
 
-`js/app.js` é compartilhado pelas 3 páginas. Ele detecta em qual página
-está — pela `<div>` com id `#welcome-root`, `#lessons-root` ou
-`#lesson-root` — e renderiza só o conteúdo daquela página a partir dos
-dados em `js/lessons-data.js`.
+`js/app.js` é compartilhado por todas as páginas e por todos os níveis —
+não existe um `app-a2.js` ou `app-b2.js` separado. Ele lê o nível pela URL
+(`levelData()`), pega o array de aulas certo (`lessons`, `lessonsA2`,
+`lessonsB1` ou `lessonsB2`) e usa **sempre a mesma estrutura de 10 passos**
+pra renderizar — inclusive o prompt de prática com IA, que é **gerado
+automaticamente** a partir do conteúdo da aula (`buildAiPrompt()`), não
+escrito à mão em cada uma.
 
 ## 🧭 Navegação
 
 ```
-index.html  →  pages/lessons.html  →  pages/lesson.html?aula=N
-(boas-vindas)   (índice das 30 aulas)   (conteúdo da aula, com ← anterior / próxima →)
+index.html  →  pages/lessons.html[?nivel=X]  →  pages/lesson.html?aula=N[&nivel=X]
+(boas-vindas)   (índice das aulas do nível)       (conteúdo da aula, com ← anterior / próxima →)
 ```
 
 ## 🧩 Como adicionar conteúdo

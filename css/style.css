@@ -545,3 +545,9 @@
   .vocab-translate-btn{margin:2px auto 0;}
   .vocab-pt.line-pt{display:none; margin-top:0;}
   .vocab-pt.line-pt.show{display:block;}
+
+  /* Aulas imersivas (B1+): a tradução da cena de abertura também
+     fica escondida atrás de um clique, igual ao resto da aula.
+     Precisa de mais especificidade que ".scene-bubble .pt" acima. */
+  .scene-bubble .pt.line-pt{display:none; margin-top:0;}
+  .scene-bubble .pt.line-pt.show{display:block;}
