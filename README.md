@@ -6,7 +6,7 @@
 
 **Aprenda inglês do zero ao avançado — uma aula por vez.**
 
-Curso A1 a B2 completo · 106 aulas · Prática guiada por IA · 100% gratuito e offline-first
+Curso A1 a C2 completo · 166 aulas · Prática guiada por IA · 100% gratuito e offline-first
 
 </div>
 
@@ -22,9 +22,36 @@ Cada aula segue sempre a mesma estrutura pedagógica, para que o aluno
 reconheça o padrão e ganhe confiança:
 
 ```
-👀 VEJA  →  💬 FRASE  →  🧩 MOLDE  →  ✂️ SIMPLIFIQUE  →  🔄 TROQUE
-   →  🗣️ FALE / ❓ PERGUNTE  →  🔁 CONVERSE  →  ➡️ CONTINUE
-   →  ♻️ REUTILIZE  →  🎯 DESAFIO  →  🗣️ prática com IA externa
+♻️ RELEMBRE  →  👀 VEJA  →  🧩 MOLDE  →  ✂️🔄 SIMPLIFIQUE E COMBINE
+   →  🗣️ TRADUZA (correção automática)  →  💬 RESPONDA  →  🎯 DESAFIO
+   →  🎭 DIÁLOGO COMPLETO  →  ♻️ FIXE  →  🗣️ prática com IA externa
+```
+
+A1, A2, B1 e B2 usam essa estrutura (`lesson.flow === "v4"` em cada aula).
+Em B1 e B2 tem uma 11ª etapa extra, **🔗 Conectores**, entre o Diálogo
+completo e o Fixe — expressões de acordo com o foco de cada nível (B1 =
+desenvolver ideias, B2 = questionar e aprofundar). No 🗣️ Traduza e no
+🎯 Desafio, em A1/A2/B1/B2: o aluno traduz uma frase de PT para EN num
+quadro de escrita, e a correção é automática (compara com a resposta,
+ignorando acentuação/pontuação/maiúsculas).
+
+**C1 e C2 mudam de estrutura** (`lesson.flow === "c1"` / `"c2"`), porque a
+partir daí o objetivo deixa de ser "aprender conteúdo novo" e passa a ser
+"refinar como expressar o que você já consegue dizer" — então os exercícios
+de escrita não comparam com uma única resposta "certa": o aluno escreve
+livremente e revela uma ou mais respostas-modelo possíveis.
+
+```
+C1 (refinar e expressar nuances):
+♻️ Relembre → 💡 Ideia → 🧩 Estruturas → 🔗 Conectores → 🗣️ Desenvolva
+   → ⚖️ Considere o outro lado → 🔄 Reformule → 🎭 Discussão
+   → 🎭 Diálogo completo → ♻️ Reutilize → 🤖 prática com IA
+
+C2 (domínio: precisão e naturalidade):
+♻️ Relembre → 👀 Veja → 🧠 Perceba → 🎯 Expresse a mesma ideia (registros)
+   → 🔄 Reformule → 🧩 Vocabulário e collocations → 🔗 Conectores
+   → 🗣️ Desenvolva → ⚖️ Considere o outro lado → 🎭 Missão comunicativa
+   → 💬 Diálogo completo → 🧠 Desafio final → ♻️ Reutilize → 🤖 prática com IA
 ```
 
 Não há chatbot nem API de IA embutida no site — cada aula **gera um prompt
@@ -32,90 +59,137 @@ automaticamente** a partir do próprio conteúdo da aula (tema, estruturas,
 vocabulário e o que já foi visto antes), pronto pra colar no ChatGPT, Gemini,
 Claude ou outra IA, e praticar a conversa por 5–10 minutos.
 
+## 🌍 Inglês a partir do B1 ("full immersion")
+
+A partir do nível **B1**, a aula inteira fica em inglês — títulos de seção,
+introdução, legendas de cena, instruções dos exercícios ("enunciados") — não
+só o vocabulário e o diálogo, como acontecia antes. A1 e A2 continuam com os
+enunciados em português (só o conteúdo novo em inglês fica com tradução
+oculta), porque nesses níveis o aluno ainda está construindo o vocabulário
+básico pra acompanhar instruções em inglês.
+
+Três coisas continuam **exatamente iguais** em todos os níveis, mesmo em
+B1-C2 imersivos:
+
+- **Tradução em português sempre disponível, mas escondida** — atrás do
+  mesmo botão "🇵🇹 See translation" / "🇵🇹 Ver tradução" já usado no resto do
+  site (`hiddenPt()`). Clique pra revelar, clique de novo pra esconder.
+- **Pronúncia simplificada** — o "português-ês" (ex. `ái iúzd tu liv...`)
+  embaixo das frases em inglês continua do mesmo jeito, em todos os níveis.
+- **A frase-fonte do 🗣️ Traduza/🎯 Desafio continua em português** — porque
+  esse campo (`fale[].pt`) **é o próprio exercício**: o aluno traduz do
+  português pro inglês, e a correção compara com a resposta certa. Traduzir
+  esse campo pra inglês destruiria o exercício (o enunciado e a resposta
+  esperada ficariam quase idênticos). Só a moldura ao redor (botões,
+  feedback, "Escreva sua frase...") muda de idioma.
+
+O que faz o site escolher inglês ou português nas partes fixas da interface
+(botões, títulos de seção, mensagens de feedback) é `isAdvancedLevel()` em
+`js/main.js` — `true` para b1/b2/c1/c2, `false` para a1/a2.
+
+Chrome do site que **não** muda de idioma (compartilhado por todos os
+níveis, incluindo A1/A2): o link "Sair" e "Voltar" do topo de página, o
+rodapé "Progresso salvo automaticamente...", a página de boas-vindas
+(`index.html`), o modal de login, e as instruções internas do prompt de IA
+(`buildAiPrompt()`) — que orientam a IA externa a corrigir e dar feedback em
+português, o que continua útil em qualquer nível.
+
 ## 🌍 Níveis disponíveis
 
 | Nível | Aulas | Acesso | Estilo |
 |---|---|---|---|
-| **A1** | 30 | 3 primeiras livres, resto com login | Introdutório, com tradução sempre visível |
-| **A2** | 16 | Login obrigatório | Imersivo — só o novo fica com tradução escondida |
-| **B1** | 30 | Login obrigatório | Imersivo |
-| **B2** | 30 | Login obrigatório | Imersivo, conversas mais longas e argumentativas |
+| **A1** | 30 | 3 primeiras livres, resto com login | Introdutório, com tradução sempre visível, enunciados em PT |
+| **A2** | 16 | Login obrigatório | Imersivo — só o novo fica com tradução escondida, enunciados em PT |
+| **B1** | 30 | Login obrigatório | 100% em inglês (enunciados inclusos) — desenvolver ideias |
+| **B2** | 30 | Login obrigatório | 100% em inglês (enunciados inclusos) — questionar e aprofundar |
+| **C1** | 30 | Login obrigatório | 100% em inglês — refinar e expressar nuances, sem correção automática de frase única |
+| **C2** | 30 | Login obrigatório | 100% em inglês — domínio: precisão, naturalidade, registro e collocations |
 
-Troca de nível pelo parâmetro `?nivel=` na URL (`a2`, `b1`, `b2` — A1 é o
-padrão): `pages/lessons.html?nivel=b2`, por exemplo. O progresso de cada
-nível é salvo separadamente (`idiolibre_progress_b2`, etc.), então terminar
-um nível não afeta os outros.
+Cada nível tem sua própria página (`pages/a1.html` ... `pages/c2.html`) — ver
+estrutura do projeto abaixo. O progresso de cada nível é salvo separadamente
+(`idiolibre_progress_c2`, etc.), então terminar um nível não afeta os outros.
 
 ## 📁 Estrutura do projeto
 
 ```
 IdioLibre/
 │
-├── index.html              → tela de boas-vindas (raiz do site)
-├── README.md                 → este arquivo
+├── index.html               → tela de boas-vindas (raiz do site)
+├── README.md                  → este arquivo
 ├── CNAME
 │
 ├── pages/
-│   ├── lessons.html          → índice das aulas (todos os níveis, via ?nivel=)
-│   ├── lesson.html           → conteúdo de uma aula (?aula=N&nivel=X)
-│   ├── b2.html                → redireciona pra lessons.html?nivel=b2 (link antigo)
-│   ├── c1.html                → "em breve" (nível ainda não criado)
-│   └── c2.html                → "em breve" (nível ainda não criado)
+│   ├── a1.html                → nível A1 (índice de aulas + conteúdo, na mesma página)
+│   ├── a2.html                → nível A2
+│   ├── b1.html                → nível B1
+│   ├── b2.html                → nível B2
+│   ├── c1.html                → nível C1
+│   └── c2.html                → nível C2
 │
 ├── css/
-│   └── style.css              → identidade visual completa (carimbo de passaporte)
+│   ├── style.css               → "chrome" do site: cores, boas-vindas, topo de
+│   │                              página, troca de nível, modal de login —
+│   │                              compartilhado por TODAS as páginas
+│   └── lessons.css             → conteúdo das aulas: índice, cartões de
+│                                  vocabulário, cena, exercícios, prática com
+│                                  IA, blocos extras de C1/C2
 │
 ├── js/
-│   ├── lessons-data.js        → conteúdo das 30 aulas do A1
-│   ├── lessons-data-a2.js     → conteúdo das 16 aulas do A2 (imersivo)
-│   ├── lessons-data-b1.js     → conteúdo das 30 aulas do B1 (imersivo, 6 mundos)
-│   ├── lessons-data-b2.js     → conteúdo das 30 aulas do B2 (imersivo, 6 mundos)
-│   ├── auth.js                 → login/acesso antecipado (Supabase + WhatsApp)
-│   └── app.js                  → um único motor de renderização pra todos os
-│                                   níveis: detecta o nível pelo `?nivel=` na
-│                                   URL e renderiza a partir do array certo
+│   ├── lessons.js              → banco de dados de TODAS as aulas, todos os
+│   │                              níveis (A1-C2) — um único arquivo
+│   └── main.js                  → tudo o resto: login/acesso antecipado
+│                                  (Supabase + WhatsApp) + motor de
+│                                  renderização de todos os níveis
 │
 └── images/
-    └── logo.jpg                → carimbo/logo do IdioLibre
+    └── logo.jpg                 → carimbo/logo do IdioLibre
 ```
 
-É um site **multi-página de verdade**: cada aula tem sua própria URL
-(`pages/lesson.html?aula=5` ou `pages/lesson.html?aula=5&nivel=b2`), o botão
-**Voltar** do navegador funciona normalmente, e qualquer aula pode ser
-aberta direto por link ou favorito.
+### Uma página por nível, com roteamento por hash
 
-`js/app.js` é compartilhado por todas as páginas e por todos os níveis —
-não existe um `app-a2.js` ou `app-b2.js` separado. Ele lê o nível pela URL
-(`levelData()`), pega o array de aulas certo (`lessons`, `lessonsA2`,
-`lessonsB1` ou `lessonsB2`) e usa **sempre a mesma estrutura de 10 passos**
-pra renderizar — inclusive o prompt de prática com IA, que é **gerado
-automaticamente** a partir do conteúdo da aula (`buildAiPrompt()`), não
-escrito à mão em cada uma.
+Cada `pages/{nivel}.html` é uma única página com uma `<div id="level-root"
+data-level="b1">` que mostra **tanto o índice de aulas quanto o conteúdo de
+uma aula específica** — a troca entre os dois é feita pelo hash da URL
+(`pages/b1.html#aula-5`), **sem recarregar a página**:
+
+- Sem hash (ou hash vazio) → mostra o índice de aulas (cartões).
+- `#aula-N` → mostra o conteúdo da aula N.
+
+Clicar num cartão de aula, no botão "← Aula anterior"/"Próxima aula →", ou
+usar o botão **voltar do navegador**, tudo isso só muda o hash — e um
+listener de `hashchange` em `js/main.js` (`renderLevelPage()`) re-renderiza
+a página na hora. Um link direto pra `pages/b1.html#aula-5` também funciona
+normalmente (abre já na aula 5).
+
+`js/main.js` é compartilhado por todas as páginas e por todos os níveis —
+não existe um `main-a2.js` ou `main-b2.js` separado. Ele lê o nível pelo
+atributo `data-level` do `#level-root` (`levelData()`), pega o array de
+aulas certo (`lessons`, `lessonsA2`, `lessonsB1`...) e usa a estrutura de
+passos certa pra renderizar — A1-B2 usam `renderLessonMainV4()`, C1 usa
+`renderLessonMainC1()` e C2 usa `renderLessonMainC2()` (schemas diferentes,
+mas o mesmo `buildAiPrompt()` no final).
 
 ## 🧭 Navegação
 
 ```
-index.html  →  pages/lessons.html[?nivel=X]  →  pages/lesson.html?aula=N[&nivel=X]
-(boas-vindas)   (índice das aulas do nível)       (conteúdo da aula, com ← anterior / próxima →)
+index.html  →  pages/{nivel}.html  →  pages/{nivel}.html#aula-N
+(boas-vindas)   (índice das aulas)     (conteúdo da aula, com ← anterior / próxima →)
 ```
 
 ## 🧩 Como adicionar conteúdo
 
-**Uma aula nova (nível A1, 31+):**
-Em `js/lessons-data.js`, copie o objeto de uma aula existente (ex.
-`LESSON_01`), ajuste o conteúdo e adicione-o ao array `lessons` no final do
-arquivo. Ela aparece automaticamente no índice e fica acessível por
-`pages/lesson.html?aula=31`.
+**Uma aula nova (num nível já existente):**
+Em `js/lessons.js`, ache o array do nível (`lessons`, `lessonsB1`...) e
+copie o objeto de uma aula existente, ajuste o conteúdo e adicione-o ao
+array. Ela aparece automaticamente no índice daquele nível e fica acessível
+por `pages/{nivel}.html#aula-N`.
 
-**Um nível novo (A2, B1...):**
-Crie `js/lessons-a2.js` seguindo o mesmo formato de objeto, e inclua o
-`<script>` correspondente nas três páginas, **antes** de `js/app.js`:
-
-```html
-<script src="js/lessons-data.js"></script>
-<script src="js/lessons-a2.js"></script>
-<script src="js/app.js"></script>
-```
+**Um nível novo:**
+Adicione o array de aulas em `js/lessons.js` (mesmo formato de objeto dos
+outros níveis), inclua o novo nível em `levelData()`/`ALL_LEVELS` em
+`js/main.js`, e crie `pages/{nivel}.html` seguindo o mesmo modelo das
+páginas existentes (uma `<div id="level-root" data-level="...">`, mais os
+`<script>` de `js/lessons.js` e `js/main.js`).
 
 ## 🔐 Acesso antecipado (login por e-mail via Supabase)
 
@@ -126,11 +200,11 @@ já funciona como formulário de lista de espera.
 **Como funciona:**
 1. Na tela inicial, a pessoa clica em **🔐 Login** e digita o e-mail.
 2. O site chama uma função no seu banco Supabase (`check_early_access`).
-3. Se o e-mail já estiver **aprovado**, ela entra direto em `pages/lessons.html`.
+3. Se o e-mail já estiver **aprovado**, ela entra direto em `pages/a1.html`.
 4. Se o e-mail for novo ou ainda **pendente**, ele é salvo como pendente e a
    pessoa vê a mensagem de lista de espera.
-5. O acesso liberado fica salvo no navegador (`localStorage`) — não precisa
-   logar de novo a cada visita, até clicar em **Sair**.
+5. O acesso liberado fica salvo no navegador (`sessionStorage`) — dura
+   enquanto a aba/navegador ficar aberto, até clicar em **Sair**.
 
 ### Configurar o seu projeto Supabase
 
@@ -174,7 +248,7 @@ grant execute on function check_early_access(text) to anon;
 
 3. Em **Project Settings → API**, copie a **Project URL** e a
    **anon public key**.
-4. Cole os dois valores no topo de `js/auth.js`:
+4. Cole os dois valores no topo de `js/main.js`:
 
 ```js
 const SUPABASE_URL = 'https://seu-projeto.supabase.co';
@@ -185,11 +259,9 @@ const SUPABASE_ANON_KEY = 'sua-chave-anon-publica';
    Supabase (**Table Editor**) e mude o `status` da pessoa de `pending`
    para `approved`. Da próxima vez que ela fizer login, entra direto.
 
-> Enquanto `js/auth.js` não for configurado, o botão de login mostra um
-> aviso pedindo para preencher esses dois valores — o resto do site
-> funciona normalmente para testes locais.
-
-
+> Enquanto essas duas constantes não forem configuradas em `js/main.js`, o
+> botão de login mostra um aviso pedindo para preenchê-las — o resto do
+> site funciona normalmente para testes locais.
 
 O progresso (aulas concluídas, respostas escritas) é salvo com
 `localStorage`, **direto no navegador da pessoa** — nada é enviado para
